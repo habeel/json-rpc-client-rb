@@ -1,3 +1,8 @@
+require 'rubygems'
+require 'bundler/setup'
+require 'rest-client'
+require 'json'
+
 module Habeel
 	module JsonRPC
 		class Client
@@ -19,7 +24,7 @@ module Habeel
 					:id => self.class.make_id
 				}.to_json
 
-				resp = RestClient.post(@url, post_data, @opts)
+				resp = RestClient::Request.execute(:method => :post, :url => @url, :payload => post_data, :headers => @opts, :timeout => 300, :open_timeout => 300)
 
 				body = JSON.parse(resp.body)
 				return body['result']
